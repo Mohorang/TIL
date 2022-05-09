@@ -1,0 +1,31 @@
+# JQuery의 함수 선언 방법
+
+function hideFunc{
+
+$("div").hide();
+
+} 
+
+hideFunc();
+
+ 
+
+함수 표현식.
+
+var showFunc = function(){
+
+$("div").show();
+
+}
+
+$("#warp").click(showFunc);
+
+ 
+
+함수 선언과 함수 표현식의 차이점. => 타이밍!!
+함수 선언을 사용하면 아무때나 사용할 수 있다. (페이지 불러오자마자 사용할 수 있음)
+함수 표현식은 자바스크립트 해석기가 해당 표현식을 만나야만 사용할 수 있다.
+
+
+
+출처: https://najaehwa.tistory.com/entry/jQuery-함수-선언과-함수-표현식 [하이오리]
