@@ -1,0 +1,9 @@
+<h1>JQuery기능으로 클래스 유무를 판단하는 함수<h1/>
+ 
+function toggle_sign_up() {
+    if ($("#sign-up-box").hasClass("is-hidden")) {
+        $("#sign-up-box").removeClass("is-hidden")
+    } else {
+        $("#sign-up-box").addClass("is-hidden")
+    }
+}
