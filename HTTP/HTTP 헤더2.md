@@ -75,11 +75,9 @@
 - 데이터가 변경되면 이 이름을 바꾸어서 변경함(Hash를 다시 생성)
   - 예) ETag: "aaaaa" -> ETag: "bbbbb"
 - 진짜 단순하게 ETag만 보내서 같으면 유지, 다르면 다시 받기!
-
-<img src ="C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221113_201406.png">
-  ![20221113_201406](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221113_201406.png)
+![20221113_201406](https://user-images.githubusercontent.com/41957723/201519896-53572667-de5e-41ec-a356-9a73c6c4c529.png)
 
 1. 첫 요청때 서버는 ETag라는 이름의 헤더를 클라이언트에 넘겨주면 클라이언트는 이를 캐시에 저장.
 2. 캐시시간 초과 후 요청때에는 request헤더에 if-None-Match라는 이름으로 ETag의 내용을 넣어서 서버에 전달.
-   ![20221113_201558](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221113_201558.png)
+   ![20221113_201558](https://user-images.githubusercontent.com/41957723/201520380-72943d92-8cb1-4f99-8293-7f45f7b8cf87.png)
 3. 일치시에는 기존 검증헤더 **304Not Modified**와 함께 **HTTP Header**만 전송 , 바디전송x
