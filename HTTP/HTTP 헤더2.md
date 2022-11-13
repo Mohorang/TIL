@@ -76,8 +76,9 @@
   - 예) ETag: "aaaaa" -> ETag: "bbbbb"
 - 진짜 단순하게 ETag만 보내서 같으면 유지, 다르면 다시 받기!
 
-
+![image-20221113201436550](C:\Users\dlwns\AppData\Roaming\Typora\typora-user-images\image-20221113201436550.png)
 
 1. 첫 요청때 서버는 ETag라는 이름의 헤더를 클라이언트에 넘겨주면 클라이언트는 이를 캐시에 저장.
 2. 캐시시간 초과 후 요청때에는 request헤더에 if-None-Match라는 이름으로 ETag의 내용을 넣어서 서버에 전달.
+   ![20221113_201558](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221113_201558.png)
 3. 일치시에는 기존 검증헤더 **304Not Modified**와 함께 **HTTP Header**만 전송 , 바디전송x
