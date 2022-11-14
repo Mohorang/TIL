@@ -81,3 +81,50 @@
 2. 캐시시간 초과 후 요청때에는 request헤더에 if-None-Match라는 이름으로 ETag의 내용을 넣어서 서버에 전달.
    ![20221113_201558](https://user-images.githubusercontent.com/41957723/201520380-72943d92-8cb1-4f99-8293-7f45f7b8cf87.png)
 3. 일치시에는 기존 검증헤더 **304Not Modified**와 함께 **HTTP Header**만 전송 , 바디전송x
+
+
+### **프록시 캐시**
+
+예를들어 미국에 있는 원 서버(Origin)에 웹브라우저에서 요청을 한다면 0.5초가 걸린다고 하자, 한국에 프록시 캐시 서버를 넣어놓고 DNS요청이 왔을때 바로 미국에 원서버로 가는것이 아니라 프록시 캐시 서버를 거치도록 하는것이다. 이 때 한국의 서버가 **프록시 캐시 서버**이다.
+
+#### **Private캐시 , Public 캐시**
+
+- **private 캐시** : 웹브라우저 내에서 로컬에 저장되서 사용되는 전용 캐시.
+- **public캐시** : 중간에서 공용으로 사용되는 캐시 (프록시 캐시)
+
+#### Cache-Control : 캐시 지시어(directives) - 기타****
+
+- **Cache-Control: public**
+  - 응답이 public 캐시에 저장되어도 됨
+- Cache-Control: private
+  - 응답이 해당 사용자만을 위한 것임, private 캐시에 저장해야 함(기본값)
+- Cache-Control: s-maxage
+  - 프록시 캐시에만 적용되는 max-age
+- Age: 60 (HTTP 헤더)
+  - 오리진 서버에서 응답 후 프록시 캐시 내에 머문 시간(초)
+
+------
+
+### **캐시 무효화**
+
+#### **Cache-Control : 확실한 캐시 무효화 응답**
+
+캐시를 적용안해도 GET요청의 경우 임의로 캐싱을 해버릴 수 있다. 그래서 확실하게 캐시를 사용하지 않게 하기 위해서 적용시켜줘야하는 지시어들이 있다.
+
+- **Cache-Control : no-cache, no-store, must-revalidate**
+- **Pragma : no-chace , HTTP 1.0호환**
+
+
+
+#### **Cache-Control : 캐시 지시어(directives)** - 확실한 캐시 무효화
+
+- **Cache-Control : no-cahce**
+  - 데이터는 캐시해도 되지만 , 항상 **원 서버에 검증**하고 사용
+- **Cache-Control : no-store**
+  - 데이터에 민감한 정보가 있으므로 저장하면 안됨(메모리에서만 사용하고 빠르게 삭제)
+- **Cache-Control: must-revalidate**
+  - 캐시 만료후 최초 조회시 원 서버에 검증해야함
+  - 원 서버 접근 실패시 반드시 오류가 발생해야함 **504(Gateway Timeout)** no-cahce와 함께 must-revalidate를 사용하는 이유. 이거중요
+  - must-revalidate는 캐시 유효 시간이라면 캐시를 사용함
+- **Pragma: no-cahce**
+  - HTTP 1.0하위 호환
