@@ -11,7 +11,8 @@ JVM의 구성은 크게 4가지로 나뉘어진다.
 - **Garbage Collector**
 - **Runtime Data Area** : Runtime Data Area는 또 5가지 영역으로 나뉘어진다.
 
-![20221115_181505](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221115_181505.png)
+![20221115_181505](https://user-images.githubusercontent.com/41957723/201882112-55848539-ca48-45ba-beb2-939983212151.png)
+
 
 1. **Class Loader** : 컴파일러에 의해 생성된 바이트코드(.class)를 Runtime Data Area 에 적재하는 역할을 수행한다.
 
