@@ -205,3 +205,63 @@ public void render(Map<String, Object> model, HttpServletRequest request, HttpSe
     dispatcher.forward(request,response);
 }
 ```
+
+------
+
+### **단순하고 실용적인 컨트롤러 -v4**
+
+프론트컨트롤러가 도입된 v1, 컨트롤러에서 바로 포워딩 하던 방식에서 뷰를 분리한 v2, 서블릿 종속성을 제거한 v3까지 잘 설계된 컨트롤러라고 할 수 있다. 그렇지만 실제 인터페이스를 구현하는 개발자 입장에서는 항상 ModelView객체를 생성하고 반환해야 하는 부분이 아직은 번거롭다고 할 수 있다. 좋은 프레임워크는 아키텍쳐도 물론 중요하지만, 그와 더불어 **실제 개발하는 개발자가 단순하고 편리하게 사용**할 수 있어야 하는점이 중요하다고 한다.
+
+![20221122_171553](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221122_171553.png)
+
+**V3와 다른점은 Controller가 ModelView가 아닌 ViewName을 반환한다는 점이다.**
+
+### **FrontControllerV4**
+
+```java
+@WebServlet(name = "frontControllerServletV4",urlPatterns = "/front-controller/v4/*")
+public class FrontControllerServletV4 extends HttpServlet {
+    //매핑정보 만들기
+    private Map<String, ControllerV4> controllerMap = new HashMap<>();
+
+    public FrontControllerServletV4() {
+        controllerMap.put("/front-controller/v4/members/new-form", new MemberFormControllerV4());
+        controllerMap.put("/front-controller/v4/members/save", new MemberSaveControllerV4());
+        controllerMap.put("/front-controller/v4/members", new MemberListControllerV4());
+    }
+
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
+
+        ControllerV4 controller = controllerMap.get(requestURI);
+        //페이지가 존재하지 않을때 404리턴
+        if(controller == null){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        //paramMap
+        Map<String, String> paramMap = createParamMap(request);
+        //v4에서 추가
+        Map<String,Object> model = new HashMap<>();
+        String viewName = controller.process(paramMap,model);
+
+        MyView view = viewResolver(viewName);
+        view.render(model,request,response);
+    }
+
+    private static MyView viewResolver(String viewName) {
+        return new MyView("/WEB-INF/views/" + viewName + ".jsp");
+    }
+
+    private static Map<String, String> createParamMap(HttpServletRequest request) {
+        Map<String,String> paramMap = new HashMap<>();
+        request.getParameterNames().asIterator()
+                .forEachRemaining(paramName -> paramMap.put(paramName, request.getParameter(paramName)));
+        return paramMap;
+    }
+}
+```
+
+v3에서 달라진 가장 큰 차이점은 v3에서는 인터페이스를 상속받은 컨트롤러들이 직접 **ModelView클래스에서** model을 생성해서 **ModelView를** 리턴해줫다면 v4에서는 **FrontController에서** Model객체를 넘겨줌으로서 컨트롤러는 String으로된 **ViewName**만 리턴해주면 되게끔 간편하게 변경되어 개발자가 다루기 편해졋다는 점이다.
