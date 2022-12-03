@@ -102,3 +102,83 @@ model.addAttribute("data","Hello <b>Spring!</b>");
 - userMap['userA'].getUsername() : Map에서 userA를 찾고 메서드 직접 호출
 
 **th:with**를 사용하면 지역 변수를 선언해서 사용할 수 있다. 지역 변수는 선언한 태그 안에서만 사용할 수 있다.
+
+
+
+------
+
+### **기본 객체들**
+
+타임리프는 기본 객체들을 제공한다.
+
+- **${#request}**
+- **${#response}**
+- **${#session}**
+- **${#servletContext}**
+- **${#locale}**
+
+그런데 #request 는 HttpServletRequest 객체가 그대로 제공되기 때문에 데이터를 조회하려면
+request.getParameter("data") 처럼 불편하게 접근해야 한다.
+
+이런 점을 해결하기 위해 편의 객체도 제공한다.
+
+- HTTP 요청 파라미터 접근: param
+  - 예) ${param.paramData}
+- HTTP 세션 접근: session
+  - 예) ${session.sessionData}
+- 스프링 빈 접근: @
+  - 예) ${@helloBean.hello('Spring!')}
+
+
+
+------
+
+###  URL링크
+
+타임리프에서 URL링크를 생성할 때에는 @{...}문법을 사용하면 된다.
+
+
+
+#### **단순한 URL**
+
+- **@{/hello} /hello**
+  - 쿼리 파라미터
+- **@{/hello(param1=${param1}, param2=${param2})}**
+  - /hello?param1=data1&param2=data2
+  - **() 에 있는 부분은 쿼리 파라미터로 처리된다.**
+
+#### **경로 변수**
+
+- @{/hello/{param1}/{param2}(param1=${param1}, param2=${param2})}
+  - /hello/data1/data2
+  - **URL 경로상에 변수가 있으면 () 부분은 경로 변수로 처리된다.**
+
+#### **경로 변수 + 쿼리 파라미터**
+
+- @{/hello/{param1}(param1=${param1}, param2=${param2})}
+  - 결과 : /hello/data1?param2=data2
+  - **경로 변수와 쿼리 파라미터를 함께 사용할 수 있다.**
+
+상대경로, 절대경로, 프로토콜 기준을 표현할 수 도 있다.
+/hello : 절대 경로
+hello : 상대 경로
+
+------
+
+### **리터럴**
+
+리터럴이란(Literals) : 소스 코드상에서 고정된 값을 말하는 용어이다. 예를들어 "Hello"는 문자리터럴이고 10,20은 숫자 리터럴이다.
+
+타임리프에서 문자 리터럴은 항상 `''`작은 따옴표로 감싸야 한다.
+ex)`<span th:text=" 'hello' ">`
+
+그런데 항상 문자를 작은따옴표로 감싸는것은 귀찮은 일이므로 공백없이 쭉 이어져나간다면 하나의 의미있는 토큰으로 인지해서 다음과 같ㅇ이 작은 따옴표를 생략할 수 있다.
+룰 : `A-Z , a-z , 0-9 , [] , . , - , _`
+
+ex)`<span th:text="hello">`
+
+#### **오류**
+
+`<span th:text="hello world!"></span>`
+
+문자 리터럴은 원칙상 공백없이 이어지는게 아니라면 작은따옴표로 감싸줘야하기 떄문에 위는 오류이다.
