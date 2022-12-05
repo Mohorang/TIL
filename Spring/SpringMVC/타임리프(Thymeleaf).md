@@ -182,3 +182,303 @@ ex)`<span th:text="hello">`
 `<span th:text="hello world!"></span>`
 
 문자 리터럴은 원칙상 공백없이 이어지는게 아니라면 작은따옴표로 감싸줘야하기 떄문에 위는 오류이다.
+
+------
+
+### **속성값**
+
+------
+
+## **반복**
+
+타임리프에서 반복은 **`th:each`** 를 사용한다. 추가로 반복에서 사용할 수 있는 여러 상태 값을 지원한다.
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>기본 테이블</h1>
+<table border="1">
+  <tr>
+    <th>username</th>
+    <th>age</th>
+  </tr>
+  <tr th:each="user : ${users}">
+    <td th:text="${user.username}">username</td>
+    <td th:text="${user.age}">0</td>
+  </tr>
+</table>
+<h1>반복 상태 유지</h1>
+<table border="1">
+  <tr>
+    <th>count</th>
+    <th>username</th>
+    <th>age</th>
+    <th>etc</th>
+  </tr>
+  <tr th:each="user, userStat : ${users}">
+    <td th:text="${userStat.count}">username</td>
+    <td th:text="${user.username}">username</td>
+    <td th:text="${user.age}">0</td>
+    <td>
+      index = <span th:text="${userStat.index}"></span>
+      count = <span th:text="${userStat.count}"></span>
+      size = <span th:text="${userStat.size}"></span>
+      even? = <span th:text="${userStat.even}"></span>
+      odd? = <span th:text="${userStat.odd}"></span>
+      first? = <span th:text="${userStat.first}"></span>
+      last? = <span th:text="${userStat.last}"></span>
+      current = <span th:text="${userStat.current}"></span>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+```
+
+#### **반복 기능**
+
+**`<tr th:each="user : ${users}">`**
+
+- 반복시 오른쪽 컬렉션( ${users} )의 값을 하나씩 꺼내서 왼쪽 변수( user )에 담아서 태그를 반복실행합니다.
+- th:each 는 List 뿐만 아니라 배열, java.util.Iterable , java.util.Enumeration 을 구현한 모든객체를 반복에 사용할 수 있습니다. Map 도 사용할 수 있는데 이 경우 변수에 담기는 값은 Map.Entry입니다.
+
+#### **반복 상태 유지**
+
+**`<tr th:each="user, userStat : ${users}">`**
+
+- 반복의 두번째 파라미터를 설정해서 반복의 상태를 확인 할 수 있습니다.두번째 파라미터는 생략 가능한데, 생략하면 지정한 변수명( user ) + Stat 가 됩니다.여기서는 user + Stat = userStat 이므로 생략 가능합니다.
+
+#### **반복 상태 유지 기능**
+
+- **index** : 0부터 시작하는 값
+- **count** : 1부터 시작하는 값
+- **size** : 전체 사이즈
+- **even** , **odd** : 홀수, 짝수 여부( boolean )
+- **first** , **last** :처음, 마지막 여부( boolean )
+- **current** : 현재 객체
+
+------
+
+### **주석**
+
+------
+
+### **블록**
+
+- 블록은 일반적으로 `th:each `로 해결하기 어려운 반복문을 처리하기 위해 사용된다. th:blcok은 유일하게 HTML태그가 아닌 타임리프의 자체태그이다.
+
+### **사용예**
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<th:block th:each="user : ${users}">
+  <div>
+    사용자 이름1 <span th:text="${user.username}"></span>
+    사용자 나이1 <span th:text="${user.age}"></span>
+  </div>
+  <div>
+    요약 <span th:text="${user.username} + ' / ' + ${user.age}"></span>
+  </div>
+</th:block>
+</body>
+</html>
+```
+
+타임리프의 특성상 HTML 태그안에 속성으로 기능을 정의해서 사용하는데, 위 예처럼 이렇게 사용하기 애매한 경우에 사용하면 된다. **`th:block`** 은 렌더링시 제거된다.
+
+------
+
+### **자바스크립트 인라인**
+
+------
+
+### **템플릿 조각**
+
+웹 페이지를 개발할 때는 공통 영역이 많다. 예를들어 상당 영역이나 하단 영역, 좌측 카테고리 등등 여러페이지에서 함께 사용하는 특정 영역들이 존재하게 된다. 이런 부분을 코드를 복사해서 사용한다면 변경시 여러페이지를 다 수정해야 하므로 상당히 비효율 적이다. 이런문제를 해결하기 위해 타임리프에서는 템플릿 조각과 레이아웃 기능을 지원한다.
+
+#### **footer.html**
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<footer th:fragment="copy">
+    푸터 자리 입니다.
+</footer>
+
+<footer th:fragment="copyParam (param1, param2)">
+    <p>파라미터 자리 입니다.</p>
+    <p th:text="${param1}"></p>
+    <p th:text="${param2}"></p>
+</footer>
+
+</body>
+</html>
+```
+
+공통적으로 사용될 코드가 들어있는 footer.html파일 , `th:fragment` 태그를 사용해서 공통적으로 사용할 코드 조각을 만들 수 있다.
+
+#### **frgamentMain.html**
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>부분 포함</h1>
+<h2>부분 포함 insert</h2>
+<div th:insert="~{template/fragment/footer :: copy}"></div>
+
+<h2>부분 포함 replace</h2>
+<div th:replace="~{template/fragment/footer :: copy}"></div>
+
+<h2>부분 포함 단순 표현식</h2>
+<div th:replace="template/fragment/footer :: copy"></div>
+
+<h1>파라미터 사용</h1>
+<div th:replace="~{template/fragment/footer :: copyParam ('데이터1', '데이터2')}"></div>
+
+</body>
+</html>
+```
+
+조각을 사용하기 위해서는 `th:inser` 나 `th:replace` 태그 중 하나를 사용하고 `~{...}` 로 감싸주어야 한다. 
+
+`th:insert` : 기존 태그의 사이에 코드조각을 삽입한다.
+
+`th:replace` : 기존 태그를 삭제하고 코드 조각이 대체한다. `~{...}`  는 원칙적으로는 사용해야 하지만 생략 가능하다.
+
+파라미터를 전달해서 동적으로 조각을 렌더링 하는것도 가능하다.
+
+```html
+<h1>파라미터 사용</h1>
+<footer>
+<p>파라미터 자리 입니다.</p>
+<p>데이터1</p>
+<p>데이터2</p>
+</footer>
+```
+
+------
+
+### **템플릿 레이아웃**
+
+이전에는 일부 코드 조각을 가지고와서 사용햇다면, 이번에는 코드 조각을 레이아웃에 넘겨서 사용하는 방법에 대해서 공부해보자.
+
+**레이아웃? :** 
+
+이전 코드에서는 한 태그만을 카피해서 사용해갔다면 템플릿 레이아웃을 이용하면 헤더같이 공통내용이 들어가있는 부분을 그대로 가져다 쓰는것이 가능해진다. 그 안에서 베이스 코드를 가져다 쓸 레이아웃에서 본인만의 내용을 넣고 싶다면 파라미터에 담아서 넘겨주는것 또한 가능하다.
+
+#### **헤더를 가져다가 쓸 HTML**
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template/layout/base :: common_header(~{::title},~{::link})">
+  <title>메인 타이틀</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/themes/smoothness/jquery-ui.css}">
+</head>
+<body>
+메인 컨텐츠
+</body>
+</html>
+```
+
+**베이스 HTML**
+
+```html
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links)">
+  <title th:replace="${title}">레이아웃 타이틀</title>
+
+  <!-- 공통 -->
+  <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/awesomeapp.css}">
+  <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+  <script type="text/javascript" th:src="@{/sh/scripts/codebase.js}"></script>
+
+  <!-- 추가 -->
+  <th:block th:replace="${links}" />
+</head>
+```
+
+#### **결과**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>메인 타이틀</title>
+<!-- 공통 -->
+<link rel="stylesheet" type="text/css" media="all" href="/css/awesomeapp.css">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<script type="text/javascript" src="/sh/scripts/codebase.js"></script>
+<!-- 추가 -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/themes/smoothness/jquery-ui.css">
+</head>
+<body>
+메인 컨텐츠
+</body>
+</html>
+```
+
+#### **레이아웃은 왜 쓸까???**
+
+- 비슷한 배치에 특정부분만 내용이 다른 홈페이지가 여러개 만들어야 하는 상황이면 템플릿 레이아웃을 사용하는게 편하다.
+
+이 템플릿 레이아웃은 이전의 `<head>` 태그 정도가 아니라 html전체에 적용할 수도 있다.
+
+#### **템플릿 레이아웃을 사용할 HTML파일**
+
+```html
+<!DOCTYPE html>
+<html th:fragment="layout (title, content)" xmlns:th="http://
+www.thymeleaf.org">
+<head>
+  <title th:replace="${title}">레이아웃 타이틀</title>
+</head>
+<body>
+<h1>레이아웃 H1</h1>
+<div th:replace="${content}">
+  <p>레이아웃 컨텐츠</p>
+</div>
+<footer>
+  레이아웃 푸터
+</footer>
+</body>
+</html>
+```
+
+#### **카피할 뼈대가 되는 HTML**
+
+```html
+<!DOCTYPE html>
+<html th:replace="~{template/layoutExtend/layoutFile :: layout(~{::title},~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>메인 페이지 타이틀</title>
+</head>
+<body>
+<section>
+  <p>메인 페이지 컨텐츠</p>
+  <div>메인 페이지 포함 내용</div>
+</section>
+</body>
+</html>
+```
