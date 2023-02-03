@@ -6,7 +6,7 @@
 
 ### **프론트 컨트롤러 도입 - v1**
 
-![20221122_115831](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221122_115831.png)
+![20221122_115831](https://user-images.githubusercontent.com/41957723/216573165-4e831746-5e27-40ad-89d2-29fd590a29c4.png)
 
 클라이언트로부터 요청이 들어오면 프론트 컨트롤러에서 URL매핑 정보를 통해 컨트롤러를 조회, 컨트롤러를 호출 후 컨트롤러는 JSP  forward를 실시.
 
@@ -63,7 +63,7 @@ dispatcher.forward(request, response);
 
 V1에서의 컨트롤러가 직접 포워딩하는 구조에서 MyView라는 객체를 반환해주도록 만들어본다.
 
-![20221122_130548](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221122_130548.png)
+![20221122_130548](https://user-images.githubusercontent.com/41957723/216573209-94a44408-3fbc-4948-bd39-5d5d79221c78.png)
 
 ### **MyView클래스 생성하기**
 
@@ -107,7 +107,7 @@ public class MyView {
 
 - **뷰 경로 중복 제거** : 가장 큰 이점은 향후 뷰의 폴더 위치가 함께 이동해도 **프론트 컨트롤러에서만 고치면** 되는점이 가장 큰 이점으로 보인다. (**ViewResolver**의 추가)
 
-![20221122_145331](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221122_145331.png)
+![20221122_145331](https://user-images.githubusercontent.com/41957723/216573231-be9cc86e-f6f0-4b4a-a36b-bc810e1cadde.png)
 
 #### **V3에서 새로 생긴 ModelView**
 
@@ -212,7 +212,7 @@ public void render(Map<String, Object> model, HttpServletRequest request, HttpSe
 
 프론트컨트롤러가 도입된 v1, 컨트롤러에서 바로 포워딩 하던 방식에서 뷰를 분리한 v2, 서블릿 종속성을 제거한 v3까지 잘 설계된 컨트롤러라고 할 수 있다. 그렇지만 실제 인터페이스를 구현하는 개발자 입장에서는 항상 ModelView객체를 생성하고 반환해야 하는 부분이 아직은 번거롭다고 할 수 있다. 좋은 프레임워크는 아키텍쳐도 물론 중요하지만, 그와 더불어 **실제 개발하는 개발자가 단순하고 편리하게 사용**할 수 있어야 하는점이 중요하다고 한다.
 
-![20221122_171553](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221122_171553.png)
+![20221122_171553](https://user-images.githubusercontent.com/41957723/216573283-8e42ba36-bd28-4676-b249-b3baa937fdd8.png)
 
 **V3와 다른점은 Controller가 ModelView가 아닌 ViewName을 반환한다는 점이다.**
 
