@@ -25,7 +25,7 @@ public class MvcMemberFormServlet extends HttpServlet {
 }
 ```
 
-1. **dispatcher.forward()**의 중요한점은 서버 내부에서 다시 호출이 발생한다는 점이다. 즉 웹 브라우저에 응답이 갔다가 다시 돌아오는 리다이렉트랑은 다르다.
+1. **dispatcher.forward()** 의 중요한점은 서버 내부에서 다시 호출이 발생한다는 점이다. 즉 웹 브라우저에 응답이 갔다가 다시 돌아오는 리다이렉트랑은 다르다.
 2. WEB-INF디렉토리 안의 jsp파일은 외부에서의 호출로는 불려지지 않는다. 항상 컨트롤러를 거쳐서 포워드 하지 않으면 호출이 불가능하다 , 이것은 WAS서버의 룰이라고 한다.
 
 
