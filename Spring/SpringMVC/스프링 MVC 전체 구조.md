@@ -4,11 +4,12 @@
 
 #### **지금까지 만든 스프링 MVC구조**
 
-![20221124_134646](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221124_134646.png)
+![20221124_134646](https://user-images.githubusercontent.com/41957723/216572520-8941a1ce-9250-42ef-94fb-063a08eb6a84.png)
+
 
 #### **실제 Spring MVC구조**
 
-![20221124_134719](C:\Users\dlwns\OneDrive\바탕 화면\인프런강의캡쳐\20221124_134719.png)
+![20221124_134719](https://user-images.githubusercontent.com/41957723/216572569-60ba6b69-3a27-44bb-9eb1-8a164f0b364c.png)
 
 #### 직접 만든 프레임워크 스프링 MVC 비교
 
