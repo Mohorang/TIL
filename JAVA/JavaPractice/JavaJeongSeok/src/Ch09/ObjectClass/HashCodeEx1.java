@@ -1,6 +1,4 @@
 package Ch09.ObjectClass;
-
-
 /**
  * 실행결과
  * true
@@ -9,6 +7,7 @@ package Ch09.ObjectClass;
  * 1435804085
  * 1784662007
  */
+//데이터 관리 기법중 하나인 hashing에 사용되는 해시함수가 구현된 Object클래스의 hashCode() 메서드에 관한 예제
 public class HashCodeEx1 {
     public static void main(String[] args) {
         String str1 = new String("abc");
