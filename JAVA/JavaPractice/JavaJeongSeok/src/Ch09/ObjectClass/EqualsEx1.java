@@ -1,4 +1,4 @@
-package Ch09.Object;
+package Ch09.ObjectClass;
 
 public class EqualsEx1 {
     public static void main(String[] args) {
