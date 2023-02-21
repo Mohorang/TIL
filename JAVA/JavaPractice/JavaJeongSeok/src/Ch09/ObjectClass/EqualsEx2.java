@@ -1,8 +1,13 @@
 package Ch09.ObjectClass;
 
+/**
+ * 출력결과
+ * p1과 p2는 다른 사람입니다.
+ * p1과 p2는 같은 사람입니다.
+ */
 class Person{
     long id;
-    //equals를 오버라이딩 하여 참조변수값이 아닌 객체가 가지고 있는 value값을 비교하게 끔 변경
+    //equals를 오버라이딩 하여 참조변수값이 아닌 객체가 가지고 있는 value값을 비교하게 끔 변경할 수 있음을 보여주는 예제
     public boolean equals(Object obj){
         if (obj instanceof Person) {
             //obj가 Object타입이므로 id값을 참조하기 위해서는 person타입으로의 형변환이 필요하다.
